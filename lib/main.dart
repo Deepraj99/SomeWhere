@@ -9,7 +9,6 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'SomeWhere',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData.dark(),
       home: SignUpPage(),
     );
   }

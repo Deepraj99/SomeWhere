@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:somewhere/AppBar.dart';
+import 'package:somewhere/SignUpPage.dart';
+import 'MainWidget.dart';
+import 'colors.dart';
 
 class LogInPage extends StatefulWidget {
   @override
@@ -6,18 +10,152 @@ class LogInPage extends StatefulWidget {
 }
 
 class _LogInPageState extends State<LogInPage> {
+  String _userID_email, _password;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Second Route"),
-      ),
-      body: Center(
-        child: ElevatedButton(
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          child: Text('Go back!'),
+      appBar: MyAppBar(),
+      body: Container(
+        height: MediaQuery.of(context).size.height,
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.end,
+            mainAxisSize: MainAxisSize.max,
+            children: [
+              Padding(
+                  padding: EdgeInsets.all(
+                      MediaQuery.of(context).size.height * 0.12)),
+              Padding(padding: EdgeInsets.only(top: 20.0)),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                child: TextFormField(
+                  onSaved: (val) => _userID_email = val,
+                  decoration: InputDecoration(
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                          color: yellow,
+                        ),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                          color: grey,
+                        ),
+                      ),
+                      labelText: "user-id/email",
+                      labelStyle: TextStyle(
+                        color: yellow,
+                      ),
+                      hintText: "Enter user-id/email",
+                      hintStyle: TextStyle(
+                        color: grey,
+                      ),
+                      icon: Icon(
+                        Icons.people,
+                        color: yellow,
+                      )),
+                  style: TextStyle(color: yellow),
+                ),
+              ),
+              Padding(padding: EdgeInsets.only(top: 20.0)),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                child: TextFormField(
+                  onSaved: (val) => _password = val,
+                  decoration: InputDecoration(
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                          color: yellow,
+                        ),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                          color: grey,
+                        ),
+                      ),
+                      labelText: "Enter Password",
+                      labelStyle: TextStyle(
+                        color: yellow,
+                      ),
+                      hintText: "Enter Password",
+                      hintStyle: TextStyle(
+                        color: grey,
+                      ),
+                      icon: Icon(
+                        Icons.lock,
+                        color: yellow,
+                      )),
+                  style: TextStyle(color: yellow),
+                ),
+              ),
+              Padding(padding: EdgeInsets.only(top: 80.0)),
+              ButtonTheme(
+                height: 60.0,
+                minWidth: 320.0,
+                child: RaisedButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => MainWidget()),
+                    );
+                  },
+                  color: yellow,
+                  child: Text(
+                    'Log In',
+                    style: TextStyle(
+                      color: voilet,
+                      fontSize: 25,
+                    ),
+                  ),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(4.0)),
+                ),
+              ),
+              Container(
+                child: Row(
+                  children: <Widget>[
+                    Text('Does not have account?'),
+                    FlatButton(
+                      textColor: Colors.blue,
+                      child: Text(
+                        'Sign in',
+                        style: TextStyle(
+                          fontSize: 17,
+                          color: yellow,
+                        ),
+                      ),
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => SignUpPage()),
+                        );
+                      },
+                    ),
+                  ],
+                  mainAxisAlignment: MainAxisAlignment.center,
+                ),
+              ),
+              Container(
+                child: Row(
+                  children: <Widget>[
+                    FlatButton(
+                      textColor: Colors.blue,
+                      child: Text(
+                        'Forgot Password',
+                        style: TextStyle(
+                          fontSize: 17,
+                          color: yellow,
+                        ),
+                      ),
+                      onPressed: () {
+                        // Forgot Password
+                      },
+                    ),
+                  ],
+                  mainAxisAlignment: MainAxisAlignment.center,
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

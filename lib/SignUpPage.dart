@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:somewhere/AppBar.dart';
 import 'package:somewhere/colors.dart';
 import 'MainWidget.dart';
 import 'LogInPage.dart';
@@ -14,14 +15,9 @@ class _SignUpPageState extends State<SignUpPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: MyAppBar(),
       body: Container(
         height: MediaQuery.of(context).size.height,
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage("images/welcome.png"),
-            fit: BoxFit.cover,
-          ),
-        ),
         child: SingleChildScrollView(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.end,
@@ -29,21 +25,20 @@ class _SignUpPageState extends State<SignUpPage> {
             children: [
               Padding(
                   padding: EdgeInsets.all(
-                      MediaQuery.of(context).size.height * 0.02)),
-              Image(
-                image: AssetImage("images/logo.png"),
-                width: 300.0,
-                height: 150.0,
-              ),
-              //Padding(padding: EdgeInsets.only(top: 200.0)),
+                      MediaQuery.of(context).size.height * 0.04)),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 12.0),
                 child: TextFormField(
                   onSaved: (val) => _name = val,
                   decoration: InputDecoration(
-                      border: OutlineInputBorder(
+                      focusedBorder: OutlineInputBorder(
                         borderSide: BorderSide(
                           color: yellow,
+                        ),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                          color: grey,
                         ),
                       ),
                       labelText: "Name",
@@ -52,12 +47,13 @@ class _SignUpPageState extends State<SignUpPage> {
                       ),
                       hintText: "Enter Your Name",
                       hintStyle: TextStyle(
-                        color: Colors.black,
+                        color: grey,
                       ),
                       icon: Icon(
-                        Icons.person,
+                        Icons.people,
                         color: yellow,
                       )),
+                  style: TextStyle(color: yellow),
                 ),
               ),
               Padding(padding: EdgeInsets.only(top: 20.0)),
@@ -66,23 +62,29 @@ class _SignUpPageState extends State<SignUpPage> {
                 child: TextFormField(
                   onSaved: (val) => _userName = val,
                   decoration: InputDecoration(
-                      border: OutlineInputBorder(
-                        borderSide: new BorderSide(
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
                           color: yellow,
+                        ),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                          color: grey,
                         ),
                       ),
                       labelText: "User ID",
                       labelStyle: TextStyle(
                         color: yellow,
                       ),
-                      hintText: "Enter a valid user id",
+                      hintText: "Enter User ID",
                       hintStyle: TextStyle(
-                        color: Colors.black,
+                        color: grey,
                       ),
                       icon: Icon(
                         Icons.account_box,
                         color: yellow,
                       )),
+                  style: TextStyle(color: yellow),
                 ),
               ),
               Padding(padding: EdgeInsets.only(top: 20.0)),
@@ -93,8 +95,15 @@ class _SignUpPageState extends State<SignUpPage> {
                   validator: (val) =>
                       !val.contains("@") ? "Invalid Email" : null,
                   decoration: InputDecoration(
-                      border: OutlineInputBorder(
-                        borderSide: new BorderSide(color: Colors.black),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                          color: yellow,
+                        ),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                          color: grey,
+                        ),
                       ),
                       labelText: "Email",
                       labelStyle: TextStyle(
@@ -102,12 +111,13 @@ class _SignUpPageState extends State<SignUpPage> {
                       ),
                       hintText: "Enter Valid Email",
                       hintStyle: TextStyle(
-                        color: Colors.black,
+                        color: grey,
                       ),
                       icon: Icon(
                         Icons.mail,
                         color: yellow,
                       )),
+                  style: TextStyle(color: yellow),
                 ),
               ),
               Padding(padding: EdgeInsets.only(top: 20.0)),
@@ -139,16 +149,16 @@ class _SignUpPageState extends State<SignUpPage> {
                       ),
                       enabledBorder: OutlineInputBorder(
                         borderSide: BorderSide(
-                          color: yellow,
+                          color: grey,
                         ),
                       ),
                       labelText: "Password",
                       labelStyle: TextStyle(
                         color: yellow,
                       ),
-                      hintText: "Enter Valid Password",
+                      hintText: "Enter Password",
                       hintStyle: TextStyle(
-                        color: Colors.black,
+                        color: grey,
                       ),
                       icon: Icon(
                         Icons.lock,
@@ -163,9 +173,14 @@ class _SignUpPageState extends State<SignUpPage> {
                 child: TextFormField(
                   onSaved: (val) => _confirmPassword = val,
                   decoration: InputDecoration(
-                      enabledBorder: OutlineInputBorder(
+                      focusedBorder: OutlineInputBorder(
                         borderSide: BorderSide(
                           color: yellow,
+                        ),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                          color: grey,
                         ),
                       ),
                       labelText: "Confirm Password",
@@ -174,15 +189,16 @@ class _SignUpPageState extends State<SignUpPage> {
                       ),
                       hintText: "Enter Password Again",
                       hintStyle: TextStyle(
-                        color: Colors.black,
+                        color: grey,
                       ),
                       icon: Icon(
-                        Icons.supervised_user_circle,
+                        Icons.visibility,
                         color: yellow,
                       )),
+                  style: TextStyle(color: yellow),
                 ),
               ),
-              Padding(padding: EdgeInsets.only(top: 50.0)),
+              Padding(padding: EdgeInsets.only(top: 60.0)),
               ButtonTheme(
                 height: 60.0,
                 minWidth: 320.0,
@@ -206,34 +222,17 @@ class _SignUpPageState extends State<SignUpPage> {
                 ),
               ),
               Padding(padding: EdgeInsets.only(top: 20.0)),
-              // ButtonTheme(
-              //   height: 60.0,
-              //   minWidth: 320.0,
-              //   child: RaisedButton(
-              //     onPressed: () {
-              //       Navigator.push(
-              //         context,
-              //         MaterialPageRoute(builder: (context) => LogInPage()),
-              //       );
-              //     },
-              //     color: yellow,
-              //     child: Text(
-              //       'Already have an Account? Log in',
-              //       style: TextStyle(
-              //         color: Colors.black,
-              //         fontSize: 15,
-              //       ),
-              //     ),
-              //     shape: RoundedRectangleBorder(
-              //         borderRadius: BorderRadius.circular(4.0)),
-              //   ),
-              // ),
               new OutlineButton(
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(4.0),
                 ),
                 textColor: voilet,
-                child: Text('Already have an Account? Log in'),
+                child: Text(
+                  'Already have an Account? Log in',
+                  style: TextStyle(
+                    color: yellow,
+                  ),
+                ),
                 borderSide: BorderSide(
                     color: yellow, style: BorderStyle.solid, width: 1),
                 onPressed: () {
@@ -243,7 +242,6 @@ class _SignUpPageState extends State<SignUpPage> {
                   );
                 },
               ),
-              // Padding(padding: EdgeInsets.only(bottom: 30.0)),
             ],
           ),
         ),

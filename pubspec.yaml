@@ -38,7 +38,13 @@ dev_dependencies:
 
 # The following section is specific to Flutter.
 flutter:
-
+  # fonts:
+  #     - asset: font.ttf
+fonts:
+- family: GreatVibes
+  fonts:
+    - asset: fonts/font.ttf
+      weight: 900
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.
