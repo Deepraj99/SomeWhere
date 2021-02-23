@@ -1,8 +1,10 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:somewhere/AppBar.dart';
 import 'package:somewhere/SignUpPage.dart';
 import 'MainWidget.dart';
 import 'colors.dart';
+import 'package:firebase_core/firebase_core.dart';
 
 class LogInPage extends StatefulWidget {
   @override
@@ -10,7 +12,36 @@ class LogInPage extends StatefulWidget {
 }
 
 class _LogInPageState extends State<LogInPage> {
-  String _userID_email, _password;
+
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+
+  checkLogin() async{
+
+    this._auth
+  .authStateChanges()
+  .listen((User user) {
+    if (user == null) {
+
+      print('User is currently signed out!');
+    } else {
+      
+        Navigator.pushReplacementNamed(context,"/home");
+    }
+  });
+
+  }
+  String _userID, _email = 'devang@gmail.com', _password = '123456';
+
+  @override
+    void initState() {
+      // TODO: implement initState
+      super.initState();
+
+      checkLogin();
+    }
+
+  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,7 +60,7 @@ class _LogInPageState extends State<LogInPage> {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 12.0),
                 child: TextFormField(
-                  onSaved: (val) => _userID_email = val,
+                  // onSaved: (val) => _email = val,
                   decoration: InputDecoration(
                       focusedBorder: OutlineInputBorder(
                         borderSide: BorderSide(
@@ -60,7 +91,7 @@ class _LogInPageState extends State<LogInPage> {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 12.0),
                 child: TextFormField(
-                  onSaved: (val) => _password = val,
+                  // onSaved: (val) => _password = val,
                   decoration: InputDecoration(
                       focusedBorder: OutlineInputBorder(
                         borderSide: BorderSide(
@@ -93,10 +124,12 @@ class _LogInPageState extends State<LogInPage> {
                 minWidth: 320.0,
                 child: RaisedButton(
                   onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => MainWidget()),
-                    );
+
+                    _auth.signInWithEmailAndPassword(email: _email, password: _password);
+                    // Navigator.push(
+                    //   context,
+                    //   MaterialPageRoute(builder: (context) => MainWidget()),
+                    // );
                   },
                   color: yellow,
                   child: Text(

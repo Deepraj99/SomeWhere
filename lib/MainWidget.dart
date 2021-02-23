@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:somewhere/AppBar.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class MainWidget extends StatefulWidget {
   @override
@@ -7,6 +8,9 @@ class MainWidget extends StatefulWidget {
 }
 
 class _MainWidgetState extends State<MainWidget> {
+    
+    final FirebaseAuth _auth = FirebaseAuth.instance;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -51,6 +55,12 @@ class _MainWidgetState extends State<MainWidget> {
           ],
         ),
       ),
+
+      body: Center(child: RaisedButton(child: Text("Logout"), onPressed: () {
+        _auth.signOut();
+              Navigator.pushReplacementNamed(context,"/signInPage");
+
+      }),),
     );
   }
 }

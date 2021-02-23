@@ -3,6 +3,8 @@ import 'package:somewhere/AppBar.dart';
 import 'package:somewhere/colors.dart';
 import 'MainWidget.dart';
 import 'LogInPage.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
 
 class SignUpPage extends StatefulWidget {
   @override
@@ -11,6 +13,8 @@ class SignUpPage extends StatefulWidget {
 
 class _SignUpPageState extends State<SignUpPage> {
   String _email, _password, _name, _userName, _confirmPassword;
+    final FirebaseAuth _auth = FirebaseAuth.instance;
+
   bool _obscureText = true;
   @override
   Widget build(BuildContext context) {
