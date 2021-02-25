@@ -10,8 +10,6 @@ void main()
 {
   WidgetsFlutterBinding.ensureInitialized();
   runApp(MyApp());
-
-
 }
 
 class MyApp extends StatelessWidget {
@@ -20,6 +18,12 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    // return MaterialApp(
+    //   home:Text("hello"),
+    // );
+
+
     return FutureBuilder(
       // Initialize FlutterFire:
       future: _initialization,

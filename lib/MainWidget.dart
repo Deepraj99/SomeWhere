@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:somewhere/AppBar.dart';
+import 'package:SomeWhere/AppBar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'models/userModels.dart';

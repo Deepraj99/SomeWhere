@@ -1,10 +1,40 @@
 {
   "project_info": {
     "project_number": "529967680653",
+    "firebase_url": "https://somewhere-b5974-default-rtdb.firebaseio.com",
     "project_id": "somewhere-b5974",
     "storage_bucket": "somewhere-b5974.appspot.com"
   },
   "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:529967680653:android:04180ed071e1c25373a6c4",
+        "android_client_info": {
+          "package_name": "com.devang.SomeWhere"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "529967680653-q8vd11teau92rv802ojag4b5aqmji395.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBu5cFQqc4tFvJ9-qEnPxmOZpxsenbTCvo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "529967680653-q8vd11teau92rv802ojag4b5aqmji395.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
     {
       "client_info": {
         "mobilesdk_app_id": "1:529967680653:android:922f9b76a857cd5c73a6c4",

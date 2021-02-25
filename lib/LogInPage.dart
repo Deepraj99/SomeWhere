@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:somewhere/AppBar.dart';
-import 'package:somewhere/SignUpPage.dart';
+import 'package:SomeWhere/AppBar.dart';
+import 'package:SomeWhere/SignUpPage.dart';
 import 'MainWidget.dart';
 import 'colors.dart';
 import 'package:firebase_core/firebase_core.dart';
