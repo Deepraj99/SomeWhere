@@ -1,21 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
 
-class Todo {
+class UserData {
   String key;
   String name;
-  bool number;
+  int number;
   String email;
 
-  Todo(this.name, this.number, this.email);
+  UserData(this.name, this.number, this.email);
 
-  Todo.fromSnapshot(DataSnapshot snapshot) :
+  UserData.fromSnapshot(DataSnapshot snapshot) :
     key = snapshot.key,
     name = snapshot.value["name"],
     number = snapshot.value["number"],
     email = snapshot.value["email"];
 
-  toJson() {
+  Map<String,dynamic> toJson() {
     return {
       "name": name,
       "number": number,

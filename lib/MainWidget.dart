@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:somewhere/AppBar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-
+import 'package:firebase_database/firebase_database.dart';
+import 'models/userModels.dart';
 class MainWidget extends StatefulWidget {
   @override
   _MainWidgetState createState() => _MainWidgetState();
@@ -10,6 +11,10 @@ class MainWidget extends StatefulWidget {
 class _MainWidgetState extends State<MainWidget> {
     
     final FirebaseAuth _auth = FirebaseAuth.instance;
+
+    DatabaseReference _databaseReference = FirebaseDatabase.instance.reference();
+
+    String email = "";
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +38,7 @@ class _MainWidgetState extends State<MainWidget> {
             ),
             ListTile(
               title: Text("Category"),
-              trailing: Icon(Icons.card_travel),
+              trailing: Icon(Icons.ac_unit),
               onTap: () => Navigator.of(context).pushNamed("/a"),
             ),
             ListTile(
@@ -56,11 +61,43 @@ class _MainWidgetState extends State<MainWidget> {
         ),
       ),
 
-      body: Center(child: RaisedButton(child: Text("Logout"), onPressed: () {
-        _auth.signOut();
-              Navigator.pushReplacementNamed(context,"/signInPage");
+      body: Center(child: Column(
+        children: [
+          Text(email),
 
-      }),),
+          RaisedButton(child: Text("add data"), onPressed: () async {
+
+     
+
+          DataSnapshot data = await _databaseReference.child("deepak").once();
+
+          UserData user1 = UserData.fromSnapshot(data);
+
+          setState(() {
+                      email = user1.email;
+                    });
+
+          }),
+
+       
+
+          RaisedButton(child: Text("update data"), onPressed: () async {
+
+          UserData user1 = UserData("Deepak",7877,"deepak@gmail.com");
+
+          await _databaseReference.child("deepak").set(user1.toJson());
+
+          
+
+          }),
+
+          RaisedButton(child: Text("Logout"), onPressed: () {
+            _auth.signOut();
+                  Navigator.pushReplacementNamed(context,"/signInPage");
+
+          }),
+        ],
+      ),),
     );
   }
 }
