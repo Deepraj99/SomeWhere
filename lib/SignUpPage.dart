@@ -4,7 +4,8 @@ import 'package:SomeWhere/colors.dart';
 import 'MainWidget.dart';
 import 'LogInPage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-
+import 'services/firebase.dart';
+import 'models/userModels.dart';
 
 class SignUpPage extends StatefulWidget {
   @override
@@ -12,8 +13,7 @@ class SignUpPage extends StatefulWidget {
 }
 
 class _SignUpPageState extends State<SignUpPage> {
-  String _email, _password, _name, _userName, _confirmPassword;
-    final FirebaseAuth _auth = FirebaseAuth.instance;
+  String _email, _password, _name, _location, _confirmPassword;
 
   bool _obscureText = true;
   @override
@@ -64,7 +64,7 @@ class _SignUpPageState extends State<SignUpPage> {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 12.0),
                 child: TextFormField(
-                  onSaved: (val) => _userName = val,
+                  onSaved: (val) => _location = val,
                   decoration: InputDecoration(
                       focusedBorder: OutlineInputBorder(
                         borderSide: BorderSide(
@@ -76,16 +76,16 @@ class _SignUpPageState extends State<SignUpPage> {
                           color: grey,
                         ),
                       ),
-                      labelText: "User ID",
+                      labelText: "Location",
                       labelStyle: TextStyle(
                         color: yellow,
                       ),
-                      hintText: "Enter User ID",
+                      hintText: "Enter Location",
                       hintStyle: TextStyle(
                         color: grey,
                       ),
                       icon: Icon(
-                        Icons.account_box,
+                        Icons.pin_drop_outlined,
                         color: yellow,
                       )),
                   style: TextStyle(color: yellow),
@@ -207,11 +207,24 @@ class _SignUpPageState extends State<SignUpPage> {
                 height: 60.0,
                 minWidth: 320.0,
                 child: RaisedButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => MainWidget()),
-                    );
+                  onPressed: () async {
+
+                    print(_email);
+
+                    UserCredential userNew = await Firebase().auth.createUserWithEmailAndPassword(email: _email, password: _password);
+
+                    UserData userToAdded = UserData(_name, _location, _email);
+
+                    await Firebase().databaseReference.child(userNew.user.uid).set(userToAdded.toJson());
+
+                  // print(Firebase().auth.currentUser.uid);
+
+                  print("done");
+
+                    // Navigator.push(
+                    //   context,
+                    //   MaterialPageRoute(builder: (context) => MainWidget()),
+                    // );
                   },
                   color: yellow,
                   child: Text(

@@ -3,18 +3,18 @@ import 'package:SomeWhere/AppBar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'models/userModels.dart';
+import 'services/firebase.dart';
+
 class MainWidget extends StatefulWidget {
   @override
   _MainWidgetState createState() => _MainWidgetState();
 }
 
 class _MainWidgetState extends State<MainWidget> {
-    
-    final FirebaseAuth _auth = FirebaseAuth.instance;
 
-    DatabaseReference _databaseReference = FirebaseDatabase.instance.reference();
+  UserData currentUser;
 
-    String email = "";
+  String email = "",name = "", location = "";
 
   @override
   Widget build(BuildContext context) {
@@ -60,44 +60,46 @@ class _MainWidgetState extends State<MainWidget> {
           ],
         ),
       ),
+      body: Center(
+        child: Column(
+          children: [
+            Text(email),
 
-      body: Center(child: Column(
-        children: [
-          Text(email),
+            Text("Name = ${name}"),
+            Text("Email = ${email}"),
+            Text("My location = ${location}"),
+            Text("My Friends"),
+            RaisedButton(
+                child: Text("update data"),
+                onPressed: () async {
+                  UserData current = await userDetails(currentUserID());
 
-          RaisedButton(child: Text("add data"), onPressed: () async {
+                  setState(() {
+                    email = current.email;
+                    name =  current.name;
+                    location = current.location;
+                  });
+                }),
+            RaisedButton(
+                child: Text("add data"),
+                onPressed: () async {
+                  UserData user1 = UserData("Deepak", "7877", "deepak@gmail.com");
 
-     
+                  await Firebase().databaseReference.child(currentUserID()).set(user1.toJson());
 
-          DataSnapshot data = await _databaseReference.child("deepak").once();
+                  print(Firebase().auth.currentUser.uid);
 
-          UserData user1 = UserData.fromSnapshot(data);
-
-          setState(() {
-                      email = user1.email;
-                    });
-
-          }),
-
-       
-
-          RaisedButton(child: Text("update data"), onPressed: () async {
-
-          UserData user1 = UserData("Deepak",7877,"deepak@gmail.com");
-
-          await _databaseReference.child("deepak").set(user1.toJson());
-
-          
-
-          }),
-
-          RaisedButton(child: Text("Logout"), onPressed: () {
-            _auth.signOut();
-                  Navigator.pushReplacementNamed(context,"/signInPage");
-
-          }),
-        ],
-      ),),
+                  print("done");
+                }),
+            RaisedButton(
+                child: Text("Logout"),
+                onPressed: () {
+                  Firebase().auth.signOut();
+                  Navigator.pushReplacementNamed(context, "/signInPage");
+                }),
+          ],
+        ),
+      ),
     );
   }
 }

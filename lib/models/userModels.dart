@@ -4,21 +4,21 @@ import 'package:firebase_database/firebase_database.dart';
 class UserData {
   String key;
   String name;
-  int number;
+  String location;
   String email;
 
-  UserData(this.name, this.number, this.email);
+  UserData(this.name, this.location, this.email);
 
   UserData.fromSnapshot(DataSnapshot snapshot) :
     key = snapshot.key,
     name = snapshot.value["name"],
-    number = snapshot.value["number"],
+    location = snapshot.value["location"],
     email = snapshot.value["email"];
 
   Map<String,dynamic> toJson() {
     return {
       "name": name,
-      "number": number,
+      "location": location,
       "email": email,
     };
   }

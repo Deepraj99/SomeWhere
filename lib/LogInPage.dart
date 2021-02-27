@@ -72,11 +72,11 @@ class _LogInPageState extends State<LogInPage> {
                           color: grey,
                         ),
                       ),
-                      labelText: "user-id/email",
+                      labelText: "email",
                       labelStyle: TextStyle(
                         color: yellow,
                       ),
-                      hintText: "Enter user-id/email",
+                      hintText: "Enter email",
                       hintStyle: TextStyle(
                         color: grey,
                       ),
