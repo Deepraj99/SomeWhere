@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:SomeWhere/AppBar.dart';
-import 'package:SomeWhere/colors.dart';
+import 'package:somewhere/AppBar.dart';
+import 'package:somewhere/colors.dart';
 import 'MainWidget.dart';
 import 'LogInPage.dart';
 import 'package:firebase_auth/firebase_auth.dart';

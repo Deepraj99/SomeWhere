@@ -30,7 +30,13 @@ class MyApp extends StatelessWidget {
       builder: (context, snapshot) {
         // Check for errors
         if (snapshot.hasError) {
-          return Text("Error");
+           return MaterialApp(
+      title: 'SomeWhere',
+      debugShowCheckedModeBanner: false,
+      home: Text("Error"),
+
+
+    );
         }
 
         // Once complete, show your application
@@ -48,8 +54,13 @@ class MyApp extends StatelessWidget {
     );
         }
 
+ return MaterialApp(
+      title: 'SomeWhere',
+      debugShowCheckedModeBanner: false,
+      home: CircularProgressIndicator(),
+
+    );
         // Otherwise, show something whilst waiting for initialization to complete
-        return CircularProgressIndicator();
       },
     );
   }

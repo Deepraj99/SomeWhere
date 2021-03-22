@@ -1,4 +1,4 @@
-name: SomeWhere
+name: somewhere
 description: A new Flutter project.
 
 # The following line prevents the package from being accidentally published to
@@ -27,7 +27,7 @@ dependencies:
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
-  cupertino_icons: ^1.0.0
+  cupertino_icons: ^1.0.2
   firebase_auth: "^0.20.0+1"
   firebase_core: "0.7.0"
   tuple: ^1.0.3

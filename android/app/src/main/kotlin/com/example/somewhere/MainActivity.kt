@@ -1,4 +1,4 @@
-package com.example.SomeWhere
+package com.example.somewhere
 
 import io.flutter.embedding.android.FlutterActivity
 
