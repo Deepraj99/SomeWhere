@@ -30,6 +30,8 @@ class MyApp extends StatelessWidget {
       builder: (context, snapshot) {
         // Check for errors
         if (snapshot.hasError) {
+
+          print(snapshot.error);
            return MaterialApp(
       title: 'SomeWhere',
       debugShowCheckedModeBanner: false,
