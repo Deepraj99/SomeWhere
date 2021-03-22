@@ -17,6 +17,24 @@ class _MainWidgetState extends State<MainWidget> {
   String email = "",name = "", location = "";
 
   @override
+    void initState() {
+      // TODO: implement initState
+      super.initState();
+
+      a() async {
+               UserData current = await userDetails(currentUserID());
+
+                      setState(() {
+                    email = current.email;
+                    name =  current.name;
+                    location = current.location;
+                  });
+      }
+
+      a();
+    }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: MyAppBar(),

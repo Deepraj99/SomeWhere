@@ -15,6 +15,13 @@ class SignUpPage extends StatefulWidget {
 class _SignUpPageState extends State<SignUpPage> {
   String _email, _password, _name, _location, _confirmPassword;
 
+  TextEditingController email = new TextEditingController();
+    TextEditingController password = new TextEditingController();
+  TextEditingController name = new TextEditingController();
+  TextEditingController location = new TextEditingController();
+  TextEditingController confirmPassword = new TextEditingController();
+
+
   bool _obscureText = true;
   @override
   Widget build(BuildContext context) {
@@ -33,6 +40,7 @@ class _SignUpPageState extends State<SignUpPage> {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 12.0),
                 child: TextFormField(
+                  controller: name,
                   onSaved: (val) => _name = val,
                   decoration: InputDecoration(
                       focusedBorder: OutlineInputBorder(
@@ -64,6 +72,7 @@ class _SignUpPageState extends State<SignUpPage> {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 12.0),
                 child: TextFormField(
+                  controller: location,
                   onSaved: (val) => _location = val,
                   decoration: InputDecoration(
                       focusedBorder: OutlineInputBorder(
@@ -95,6 +104,7 @@ class _SignUpPageState extends State<SignUpPage> {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 12.0),
                 child: TextFormField(
+                  controller: email,
                   onSaved: (val) => _email = val,
                   validator: (val) =>
                       !val.contains("@") ? "Invalid Email" : null,
@@ -128,6 +138,7 @@ class _SignUpPageState extends State<SignUpPage> {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 12.0),
                 child: TextFormField(
+                  controller: password,
                   onSaved: (val) => _password = val,
                   validator: (val) =>
                       val.length < 6 ? "Password Is Too Short" : null,
@@ -175,6 +186,7 @@ class _SignUpPageState extends State<SignUpPage> {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 12.0),
                 child: TextFormField(
+                  controller: confirmPassword,
                   onSaved: (val) => _confirmPassword = val,
                   decoration: InputDecoration(
                       focusedBorder: OutlineInputBorder(
@@ -209,11 +221,11 @@ class _SignUpPageState extends State<SignUpPage> {
                 child: RaisedButton(
                   onPressed: () async {
 
-                    print(_email);
+                    print(email.text);
 
-                    UserCredential userNew = await Firebase().auth.createUserWithEmailAndPassword(email: _email, password: _password);
+                    UserCredential userNew = await Firebase().auth.createUserWithEmailAndPassword(email: email.text, password: password.text);
 
-                    UserData userToAdded = UserData(_name, _location, _email);
+                    UserData userToAdded = UserData(name.text, location.text, email.text);
 
                     await Firebase().databaseReference.child(userNew.user.uid).set(userToAdded.toJson());
 

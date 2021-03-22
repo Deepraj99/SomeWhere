@@ -13,6 +13,8 @@ class LogInPage extends StatefulWidget {
 
 class _LogInPageState extends State<LogInPage> {
 
+  TextEditingController email = new TextEditingController();
+  TextEditingController password = new TextEditingController();
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
   checkLogin() async{
@@ -60,6 +62,7 @@ class _LogInPageState extends State<LogInPage> {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 12.0),
                 child: TextFormField(
+                  controller: email,
                   // onSaved: (val) => _email = val,
                   decoration: InputDecoration(
                       focusedBorder: OutlineInputBorder(
@@ -91,6 +94,7 @@ class _LogInPageState extends State<LogInPage> {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 12.0),
                 child: TextFormField(
+                  controller: password,
                   // onSaved: (val) => _password = val,
                   decoration: InputDecoration(
                       focusedBorder: OutlineInputBorder(
@@ -125,7 +129,9 @@ class _LogInPageState extends State<LogInPage> {
                 child: RaisedButton(
                   onPressed: () {
 
-                    _auth.signInWithEmailAndPassword(email: _email, password: _password);
+                      print(email.text);
+                      print(password.text);
+                    _auth.signInWithEmailAndPassword(email: email.text, password: password.text);
                     // Navigator.push(
                     //   context,
                     //   MaterialPageRoute(builder: (context) => MainWidget()),
