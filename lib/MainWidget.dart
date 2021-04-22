@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:somewhere/AppBar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';  
+import 'package:somewhere/colors.dart';
 import 'models/userModels.dart';
 import 'services/firebase.dart';
 
@@ -12,7 +14,11 @@ class MainWidget extends StatefulWidget {
 
 class _MainWidgetState extends State<MainWidget> {
 
+  GoogleMapController myController;  
+
   UserData currentUser;
+
+final LatLng _center = const LatLng(45.521563, -122.677433);  
 
   String email = "",name = "", location = "";
 
@@ -39,13 +45,16 @@ class _MainWidgetState extends State<MainWidget> {
     return Scaffold(
       appBar: MyAppBar(),
       drawer: Drawer(
+
         child: ListView(
+          padding: EdgeInsets.all(0),
           children: [
             UserAccountsDrawerHeader(
+              decoration: BoxDecoration(color: kvoilet),
               accountName: Text("Deepak"),
               accountEmail: Text("abcd@gamil.com"),
               currentAccountPicture: CircleAvatar(
-                backgroundColor: Colors.orange,
+                backgroundColor: Colors.amber,
                 child: Text("DP"),
               ),
             ),
@@ -66,10 +75,13 @@ class _MainWidgetState extends State<MainWidget> {
             ),
             Divider(),
             ListTile(
-              title: Text("Mascot"),
-              trailing: Icon(Icons.home),
-              onTap: () => Navigator.of(context).pushNamed("/a"),
-            ),
+              title: Text("Logout"),
+              trailing: Icon(Icons.logout),
+              onTap: () {
+                  Firebase().auth.signOut();
+                  Navigator.pushReplacementNamed(context, "/signInPage");
+                }),
+            
             ListTile(
               title: Text("Close"),
               trailing: Icon(Icons.close),
@@ -78,46 +90,56 @@ class _MainWidgetState extends State<MainWidget> {
           ],
         ),
       ),
-      body: Center(
-        child: Column(
-          children: [
-            Text(email),
+      body: GoogleMap(  
+              // onMapCreated: _onMapCreated,  
+              initialCameraPosition: CameraPosition(  
+                target: _center,  
+                zoom: 10.0,  
+              ),  
+            ),  
+      
+      // Center(
 
-            Text("Name = ${name}"),
-            Text("Email = ${email}"),
-            Text("My location = ${location}"),
-            Text("My Friends"),
-            RaisedButton(
-                child: Text("update data"),
-                onPressed: () async {
-                  UserData current = await userDetails(currentUserID());
+      //   child: Text("hello"),
+        // child: Column(
+        //   children: [
+        //     Text(email),
 
-                  setState(() {
-                    email = current.email;
-                    name =  current.name;
-                    location = current.location;
-                  });
-                }),
-            RaisedButton(
-                child: Text("add data"),
-                onPressed: () async {
-                  UserData user1 = UserData("Deepak", "7877", "deepak@gmail.com");
+        //     Text("Name = ${name}"),
+        //     Text("Email = ${email}"),
+        //     Text("My location = ${location}"),
+        //     Text("My Friends"),
+        //     RaisedButton(
+        //         child: Text("update data"),
+        //         onPressed: () async {
+        //           UserData current = await userDetails(currentUserID());
 
-                  await Firebase().databaseReference.child(currentUserID()).set(user1.toJson());
+        //           setState(() {
+        //             email = current.email;
+        //             name =  current.name;
+        //             location = current.location;
+        //           });
+        //         }),
+        //     RaisedButton(
+        //         child: Text("add data"),
+        //         onPressed: () async {
+        //           UserData user1 = UserData("Deepak", "7877", "deepak@gmail.com");
 
-                  print(Firebase().auth.currentUser.uid);
+        //           await Firebase().databaseReference.child(currentUserID()).set(user1.toJson());
 
-                  print("done");
-                }),
-            RaisedButton(
-                child: Text("Logout"),
-                onPressed: () {
-                  Firebase().auth.signOut();
-                  Navigator.pushReplacementNamed(context, "/signInPage");
-                }),
-          ],
-        ),
-      ),
+        //           print(Firebase().auth.currentUser.uid);
+
+        //           print("done");
+        //         }),
+        //     RaisedButton(
+        //         child: Text("Logout"),
+        //         onPressed: () {
+        //           Firebase().auth.signOut();
+        //           Navigator.pushReplacementNamed(context, "/signInPage");
+        //         }),
+        //   ],
+        // ),
+      // ),
     );
   }
 }
