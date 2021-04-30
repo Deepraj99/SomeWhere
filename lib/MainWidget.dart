@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:somewhere/AppBar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';  
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:somewhere/colors.dart';
 import 'models/userModels.dart';
 import 'services/firebase.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class MainWidget extends StatefulWidget {
   @override
@@ -14,132 +16,134 @@ class MainWidget extends StatefulWidget {
 
 class _MainWidgetState extends State<MainWidget> {
 
-  GoogleMapController myController;  
+  Future<Position> _determinePosition() async {
+
+    await Permission.location.request().isGranted;
+
+    bool serviceEnabled;
+    LocationPermission permission;
+
+    print("Map done");
+
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      return Future.error('Location services are disabled.');
+    }
+
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        return Future.error('Location permissions are denied');
+      }
+    }
+
+    if (permission == LocationPermission.deniedForever) {
+      return Future.error(
+          'Location permissions are permanently denied, we cannot request permissions.');
+    }
+
+    print("location : " + Geolocator.getCurrentPosition().toString());
+    return await Geolocator.getCurrentPosition();
+  }
+
+  GoogleMapController myController;
 
   UserData currentUser;
 
-final LatLng _center = const LatLng(45.521563, -122.677433);  
+  LatLng _center = const LatLng(45.521563, -122.677433);
 
-  String email = "",name = "", location = "";
+  String email = "", name = "", location = "";
 
   @override
-    void initState() {
-      // TODO: implement initState
-      super.initState();
+  void initState() {
+    // TODO: implement initState
+    super.initState();
 
-      a() async {
-               UserData current = await userDetails(currentUserID());
+    a() async {
+      UserData current = await userDetails(currentUserID());
 
-                      setState(() {
-                    email = current.email;
-                    name =  current.name;
-                    location = current.location;
-                  });
-      }
-
-      a();
+      setState(() {
+        email = current.email;
+        name = current.name;
+        location = current.location;
+      });
     }
+
+    a();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: MyAppBar(),
-      drawer: Drawer(
-
-        child: ListView(
-          padding: EdgeInsets.all(0),
-          children: [
-            UserAccountsDrawerHeader(
-              decoration: BoxDecoration(color: kvoilet),
-              accountName: Text("Deepak"),
-              accountEmail: Text("abcd@gamil.com"),
-              currentAccountPicture: CircleAvatar(
-                backgroundColor: Colors.amber,
-                child: Text("DP"),
+        appBar: MyAppBar(),
+        drawer: Drawer(
+          child: ListView(
+            padding: EdgeInsets.all(0),
+            children: [
+              UserAccountsDrawerHeader(
+                decoration: BoxDecoration(color: kvoilet),
+                accountName: Text("Deepak"),
+                accountEmail: Text("abcd@gamil.com"),
+                currentAccountPicture: CircleAvatar(
+                  backgroundColor: Colors.amber,
+                  child: Text("DP"),
+                ),
               ),
-            ),
-            ListTile(
-              title: Text("Home"),
-              trailing: Icon(Icons.home),
-              onTap: () => Navigator.of(context).pushNamed("/a"),
-            ),
-            ListTile(
-              title: Text("Category"),
-              trailing: Icon(Icons.ac_unit),
-              onTap: () => Navigator.of(context).pushNamed("/a"),
-            ),
-            ListTile(
-              title: Text("Profile"),
-              trailing: Icon(Icons.more),
-              onTap: () => Navigator.of(context).pushNamed("/a"),
-            ),
-            Divider(),
-            ListTile(
-              title: Text("Logout"),
-              trailing: Icon(Icons.logout),
-              onTap: () {
-                  Firebase().auth.signOut();
-                  Navigator.pushReplacementNamed(context, "/signInPage");
-                }),
-            
-            ListTile(
-              title: Text("Close"),
-              trailing: Icon(Icons.close),
-              onTap: () => Navigator.of(context).pop(),
-            )
-          ],
+              ListTile(
+                title: Text("Home"),
+                trailing: Icon(Icons.home),
+                onTap: () => Navigator.of(context).pushNamed("/a"),
+              ),
+              ListTile(
+                title: Text("Category"),
+                trailing: Icon(Icons.ac_unit),
+                onTap: () => Navigator.of(context).pushNamed("/a"),
+              ),
+              ListTile(
+                title: Text("Profile"),
+                trailing: Icon(Icons.more),
+                onTap: () => Navigator.of(context).pushNamed("/a"),
+              ),
+              Divider(),
+              ListTile(
+                  title: Text("Logout"),
+                  trailing: Icon(Icons.logout),
+                  onTap: () {
+                    Firebase().auth.signOut();
+                    Navigator.pushReplacementNamed(context, "/signInPage");
+                  }),
+              ListTile(
+                title: Text("Close"),
+                trailing: Icon(Icons.close),
+                onTap: () => Navigator.of(context).pop(),
+              )
+            ],
+          ),
         ),
-      ),
-      body: GoogleMap(  
-              // onMapCreated: _onMapCreated,  
-              initialCameraPosition: CameraPosition(  
-                target: _center,  
-                zoom: 10.0,  
-              ),  
-            ),  
-      
-      // Center(
+        body: FutureBuilder(
+          future: _determinePosition(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.done && snapshot.hasData) {
 
-      //   child: Text("hello"),
-        // child: Column(
-        //   children: [
-        //     Text(email),
+              print("snapshot : ${snapshot.data}");
 
-        //     Text("Name = ${name}"),
-        //     Text("Email = ${email}"),
-        //     Text("My location = ${location}"),
-        //     Text("My Friends"),
-        //     RaisedButton(
-        //         child: Text("update data"),
-        //         onPressed: () async {
-        //           UserData current = await userDetails(currentUserID());
+              Position data = snapshot.data;
 
-        //           setState(() {
-        //             email = current.email;
-        //             name =  current.name;
-        //             location = current.location;
-        //           });
-        //         }),
-        //     RaisedButton(
-        //         child: Text("add data"),
-        //         onPressed: () async {
-        //           UserData user1 = UserData("Deepak", "7877", "deepak@gmail.com");
+             print(data.latitude);
+            // center = ;
+                           
+              return GoogleMap(
+                // onMapCreated: _onMapCreated,
+                initialCameraPosition: CameraPosition(
+                  target: LatLng(data.latitude, data.longitude),
+                  zoom: 10.0,
+                ),
+              );
+            }
 
-        //           await Firebase().databaseReference.child(currentUserID()).set(user1.toJson());
-
-        //           print(Firebase().auth.currentUser.uid);
-
-        //           print("done");
-        //         }),
-        //     RaisedButton(
-        //         child: Text("Logout"),
-        //         onPressed: () {
-        //           Firebase().auth.signOut();
-        //           Navigator.pushReplacementNamed(context, "/signInPage");
-        //         }),
-        //   ],
-        // ),
-      // ),
-    );
+            return CircularProgressIndicator();
+          },
+        ));
   }
 }
