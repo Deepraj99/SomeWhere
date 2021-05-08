@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:somewhere/AppBar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -15,9 +17,7 @@ class MainWidget extends StatefulWidget {
 }
 
 class _MainWidgetState extends State<MainWidget> {
-
   Future<Position> _determinePosition() async {
-
     await Permission.location.request().isGranted;
 
     bool serviceEnabled;
@@ -55,13 +55,44 @@ class _MainWidgetState extends State<MainWidget> {
 
   String email = "", name = "", location = "";
 
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
+  Set<Marker> _markers = {};
 
-    a() async {
+  Future<Position> initialiser() async {
+
+      Position data = await _determinePosition();
+
+      await Firebase().databaseReference.child(currentUserID()).update({
+        "latitude": data.latitude.toString(),
+        "longitude": data.longitude.toString(),
+      });
+
+      await FirebaseDatabase.instance.reference().once().then((DataSnapshot snapshot) {
+      Map<dynamic, dynamic> values = snapshot.value;
+      values.forEach((key, values) {
+        _markers.add(Marker(
+            markerId: MarkerId(currentUserID()),
+            position: LatLng(double.parse(values["latitude"]),
+                double.parse(values["longitude"])),
+            infoWindow: InfoWindow(
+              title: values["name"],
+            )));
+
+        print(values["name"]);
+      });
+    });
+
+    return data;
+
+  }
+
+  @override
+    void initState() {
+      // TODO: implement initState
+      super.initState();
+         a() async {
       UserData current = await userDetails(currentUserID());
+
+      print(" email ${current.email}");
 
       setState(() {
         email = current.email;
@@ -71,7 +102,7 @@ class _MainWidgetState extends State<MainWidget> {
     }
 
     a();
-  }
+    }
 
   @override
   Widget build(BuildContext context) {
@@ -83,27 +114,12 @@ class _MainWidgetState extends State<MainWidget> {
             children: [
               UserAccountsDrawerHeader(
                 decoration: BoxDecoration(color: kvoilet),
-                accountName: Text("Deepak"),
-                accountEmail: Text("abcd@gamil.com"),
+                accountName: Text(name),
+                accountEmail: Text(email),
                 currentAccountPicture: CircleAvatar(
                   backgroundColor: Colors.amber,
-                  child: Text("DP"),
+                  child: Icon(Icons.person),
                 ),
-              ),
-              ListTile(
-                title: Text("Home"),
-                trailing: Icon(Icons.home),
-                onTap: () => Navigator.of(context).pushNamed("/a"),
-              ),
-              ListTile(
-                title: Text("Category"),
-                trailing: Icon(Icons.ac_unit),
-                onTap: () => Navigator.of(context).pushNamed("/a"),
-              ),
-              ListTile(
-                title: Text("Profile"),
-                trailing: Icon(Icons.more),
-                onTap: () => Navigator.of(context).pushNamed("/a"),
               ),
               Divider(),
               ListTile(
@@ -122,23 +138,25 @@ class _MainWidgetState extends State<MainWidget> {
           ),
         ),
         body: FutureBuilder(
-          future: _determinePosition(),
+          future: initialiser(),
           builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.done && snapshot.hasData) {
-
+            if (snapshot.connectionState == ConnectionState.done &&
+                snapshot.hasData) {
               print("snapshot : ${snapshot.data}");
 
               Position data = snapshot.data;
 
-             print(data.latitude);
-            // center = ;
-                           
+              print(data.latitude);
+              // center = ;
+
               return GoogleMap(
                 // onMapCreated: _onMapCreated,
                 initialCameraPosition: CameraPosition(
                   target: LatLng(data.latitude, data.longitude),
                   zoom: 10.0,
                 ),
+
+                markers: _markers,
               );
             }
 

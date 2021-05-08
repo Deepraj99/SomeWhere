@@ -58,7 +58,7 @@ class MyApp extends StatelessWidget {
  return MaterialApp(
       title: 'SomeWhere',
       debugShowCheckedModeBanner: false,
-      home: CircularProgressIndicator(),
+      home: Center(child: CircularProgressIndicator()),
 
     );
         // Otherwise, show something whilst waiting for initialization to complete
